@@ -20,6 +20,8 @@ public class Player : MonoBehaviour
 
     private int score;
 
+    Dictionary<string, int> powerUps = new Dictionary<string, int>();
+
 
     private string Color;
     // Start is called before the first frame update
@@ -42,6 +44,27 @@ public class Player : MonoBehaviour
             rb.constraints = RigidbodyConstraints2D.None;
             rb.velocity = Vector2.up * jumpForce;
         }
+
+        if (Input.GetKeyDown(KeyCode.S)){
+            Debug.Log("trigger");
+            int value = 0;
+            if (powerUps.TryGetValue("power_up_jump",out value))
+            {
+                if (value > 0)
+                {
+                    Debug.Log("Power up !");
+                    powerUps["power_up_jump"] -= 1;
+                    rb.velocity = Vector2.up * jumpForce * 2;
+
+                }
+                
+            }
+            else
+            {
+                Debug.Log("no boost power up");
+            }
+            
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D col)
@@ -55,6 +78,14 @@ public class Player : MonoBehaviour
             InstantiateNewCircle();
             return;
         }
+
+        if(col.tag == "power_up_jump")
+        {
+            addIfNotInDict(col.tag);
+            Destroy(col.gameObject);
+            return;
+        }
+
         if (col.tag != Color)
         {
             Debug.Log("Game Over");
@@ -172,6 +203,19 @@ public class Player : MonoBehaviour
         else
         {
             return 200  ;
+        }
+    }
+
+    private void addIfNotInDict(string name)
+    {
+        int val = 0;
+        if (powerUps.TryGetValue(name, out val))
+        {
+            powerUps[name] += 1;
+        }
+        else
+        {
+            powerUps.Add(name, 1);
         }
     }
 }

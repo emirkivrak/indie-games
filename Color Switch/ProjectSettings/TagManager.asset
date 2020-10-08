@@ -10,6 +10,7 @@ TagManager:
   - Yellow
   - ColorChanger
   - DoubleCircle
+  - power_up_jump
   layers:
   - Default
   - TransparentFX
