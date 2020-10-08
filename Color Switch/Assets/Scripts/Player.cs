@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
     {
         if (col.tag == "ColorChanger")
         {
-            
+            FindObjectOfType<AudioManager>().Play("positive_1");
             GetRandomColor();
             Destroy(col.gameObject);
             updateScoreText(getLastCircle()) ;
